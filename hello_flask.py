@@ -1,8 +1,7 @@
-from flask import Flask
 from flask import render_template
+from database import db
+from database import app
 
-
-app = Flask(__name__)
 
 # 装饰器的作用url与视图函数的映射
 
@@ -17,8 +16,14 @@ def login_app():
     return render_template("login.html", username="monkeyQK")
 
 
+@app.route("/init")
+def db_init():
+    db.create_all()
+    return "初始化成功！"
+
+
 def main():
-    app.run(debug=True)
+    app.run(debug=True, host="127.0.0.1")
 
 
 if __name__ == '__main__':
