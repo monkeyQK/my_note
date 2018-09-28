@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+{% if username %}
+<h1>欢迎{{username}}使用本系统！</h1>
+{% else %}
+<h1>欢迎您使用本系统！</h1>
+{% endif %}
+{% endblock %}
