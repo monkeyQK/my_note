@@ -14,7 +14,7 @@ dialect = "mysql"
 driver = "mysqlconnector"
 username = "root"
 password = "Zqk@161205"
-host = "192.168.3.11"
+host = "127.0.0.1"
 port = '3306'
 database = "my_notes"
 conn_url = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(
@@ -28,7 +28,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = conn_url
 app.config['SQLALCHEMY_COMMIT_TEARDOWN'] = True
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_COMMIT_ON_TEARDOWN'] = True
-
+app.config['SECRET_KEY'] = 'asdfasd'
 # 获取SQLAlchemy实例对象，接下来就可以使用对象调用数据
 
 db = SQLAlchemy(app)

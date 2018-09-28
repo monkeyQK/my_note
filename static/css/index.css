@@ -1,6 +1,32 @@
 .logo{
     width: 32px;
     height: 32px;
-    display: flex;
-    align-items: center
+    margin: 10px;
+    overflow: hidden;
+}
+.body{    
+    background: #f3f3f3;
+}
+.main{
+    background: #fff;
+    width: 730px;
+    margin: 0 auto;
+    overflow: hidden;
+    padding:10px; 
+}
+.form-container{
+    margin: 0 auto;
+    width: 300px
+}
+
+.form-main{
+    padding: 10px;
+}
+.form-group{
+    margin: 0 auto;
+    padding: 10px;
+}
+.form-control{
+    margin: 0 auto;
+    width: 300px;
 }

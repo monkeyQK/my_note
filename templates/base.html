@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/index.css')}}">
 
 </head>
-<body>
+<body class="body">
 <nav class="navbar navbar-default">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
@@ -26,7 +26,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="{{url_for('index')}}">
+      <a  href="{{url_for('index')}}">
         <img class="logo" src="{{ url_for('static',filename='images/note_logo.png')}}">
       </a>
     </div>
@@ -55,12 +55,19 @@
         <button type="submit" class="btn btn-default">查询</button>
       </form>
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="{{url_for('login_app')}}">登录</a></li>
-        <li><a href="{{url_for('reg_app')}}">注册</a></li>
+        {% if user%}
+          <li><a href="#">{{user.user_name}}</a></li>
+          <li><a href="{{url_for('logo_out')}}">注销</a></li>
+        {% else %}
+          <li><a href="{{url_for('login_app')}}">登录</a></li>
+          <li><a href="{{url_for('reg_app')}}">注册</a></li>
+        {% endif %}
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
-{% block content %}{% endblock %}
+<div class="main">
+{% block main %}{% endblock %}
+</div>
 </body>
 </html>
