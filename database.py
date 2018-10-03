@@ -14,7 +14,7 @@ dialect = "mysql"
 driver = "mysqlconnector"
 username = "root"
 password = "Zqk@161205"
-host = "127.0.0.1"
+host = "192.168.3.11"
 port = '3306'
 database = "my_notes"
 conn_url = "{}+{}://{}:{}@{}:{}/{}?charset=utf8".format(

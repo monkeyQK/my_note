@@ -16,7 +16,7 @@
 }
 .form-container{
     margin: 0 auto;
-    width: 300px
+    width: 300px;
 }
 
 .form-main{
@@ -29,4 +29,10 @@
 .form-control{
     margin: 0 auto;
     width: 300px;
+}
+.content-text{
+    margin: 0 auto;
+}
+.form-text{
+    margin: 0 auto;
 }

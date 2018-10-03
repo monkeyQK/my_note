@@ -65,6 +65,52 @@ def check_login():
         return "用户名或密码错误！"
 
 
+@app.route('/regist_user', methods=['POST'])
+def regist():
+    user_id = request.form.get('user_id')
+    # user_id = eval(user_id)
+    print(request.form.get('user_id'))
+    user = User.query.filter_by(user_id=user_id).first()
+    if user:
+        return "用户名已存在"
+    else:
+        pass
+    user_name = request.form.get('user_name')
+    print(request.form.get('user_name'))
+    user_pwd = request.form.get('user_password')
+    # user_pwd = eval(user_pwd)
+    print(user_pwd)
+    user_new = User(user_id=user_id, user_name=user_name,
+                    user_password=user_pwd)
+    # 单条插入
+    db.session.add(user_new)
+    db.session.commit()
+    return '注册成功！'
+
+
+@app.route('/content', methods=['POST'])
+def content():
+    user_id = request.form.get('user_id')
+    # user_id = eval(user_id)
+    print(request.form.get('user_id'))
+    user = User.query.filter_by(user_id=user_id).first()
+    if user:
+        return "用户名已存在"
+    else:
+        pass
+    user_name = request.form.get('user_name')
+    print(request.form.get('user_name'))
+    user_pwd = request.form.get('user_password')
+    # user_pwd = eval(user_pwd)
+    print(user_pwd)
+    user_new = User(user_id=user_id, user_name=user_name,
+                    user_password=user_pwd)
+    # 单条插入
+    db.session.add(user_new)
+    db.session.commit()
+    return '注册成功！'
+
+
 @app.route("/logo_out")
 def logo_out():
     session.clear()
@@ -81,6 +127,12 @@ def reg_app():
 def index():
     page_name = "首页"
     return render_template("index.html", page_name=page_name)
+
+
+@app.route("/note")
+def note():
+    page_name = "记录"
+    return render_template("note.html", page_name=page_name)
 
 
 @app.route("/list")
