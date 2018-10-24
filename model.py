@@ -1,11 +1,11 @@
-from database import db
+from note import db
 
 
 # 定义模型 Flask-SQLALchemy使用继承至db.Model的类来定义模型,如:
 
 class Note_info(db.Model):
     __tablename__ = 'note_info'
-    note_id = db.Column(db.String(64), primary_key=True)
+    note_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     note_name = db.Column(db.String(30), default="")
     note_type = db.Column(db.String(30), default="")
     note_addr = db.Column(db.String(20), default="")
@@ -20,9 +20,11 @@ class Note_info(db.Model):
         return{
             "note_id": self.note_id,
             "note_name": self.note_name,
+            "note_type": self.note_type,
             "note_addr": self.note_addr,
             "note_username": self.note_username,
-            "note_password": self.note_password
+            "note_password": self.note_password,
+            "note_mark": self.note_mark
 
         }
 
@@ -43,3 +45,5 @@ class User(db.Model):
             "user_password": self.user_password
 
         }
+
+

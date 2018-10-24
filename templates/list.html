@@ -1,7 +1,29 @@
 {% extends "base.html" %}
 {% block main %}
-{% for post in posts %}
-<p>{{post.author.nickname}} says: <b>{{post.body}}</b></p>
-{% endfor %}
+    <form action="{{url_for('note')}}">
+    <button type="submit" class="btn btn-primary btn-block">添加备忘</button>
+    </form>
+
+    <table class="table table-bordered">
+        <tr>
+        <td align="center">ID</td>
+        <td align="center">分类</td>
+        <td align="center">标签</td>
+        <td align="center">地址</td>
+        <td align="center">用户名</td>
+        <td align="center">密码</td>
+        <td align="center">备注</td></tr>
+        {% for item in posts %}
+        <tr>
+        <td>{{ item.note_id }}</td>
+        <td>{{ item.note_type }}</td>
+        <td>{{ item.note_name }}</td>
+        <td>{{ item.note_addr }}</td>
+        <td>{{ item.note_username }}</td>
+        <td>{{ item.note_password }}</td>
+        <td>{{ item.note_mark }}</td></tr>
+       {% endfor %}
+    </table>
+
 {% endblock %}
 
