@@ -7,8 +7,8 @@ from flask import request
 from flask import session
 from flask import redirect
 from flask import url_for
-import  json
-from  functools import  wraps
+import json
+from functools import wraps
 # 装饰器的作用url与视图函数的映射
 
 note_user = {
@@ -27,6 +27,15 @@ posts = [  # fake array of posts
         'body': 'The Avengers movie was so cool!'
     }]
 
+my_note_type = {
+    "01": "服务器登录",
+    "02": "阿里云用户",
+    "03": "淘宝",
+    "04": "学习网站",
+    "05": "医院网络配置",
+    "06": "重要配置",
+    "07": "其他"}
+
 
 @app.route('/insert_user')
 def insert_user():
@@ -39,15 +48,16 @@ def insert_user():
     return '插入成功！'
 
 
-
 def log_required(func):
     @wraps(func)
-    def wrapper(*args,**kwargs):
-        print('hello world')
-        return func(*args,**kwargs)
+    def wrapper(*args, **kwargs):
+        print(session.get("user_id"))
+        if session.get('user_id'):
+            return func(*args, **kwargs)
+        else:
+            return redirect(url_for("login_app"))
 
     return wrapper
-
 
 
 @app.route("/login")
@@ -60,15 +70,14 @@ def login_app():
 def check_login():
     user_id = request.form.get('user_id')
     # user_id = eval(user_id)
-    print(request.form.get('user_id'))
     user_pwd = request.form.get('user_password')
     # user_pwd = eval(user_pwd)
-    print(user_pwd)
     user = User.query.filter_by(user_id=user_id,
                                 user_password=user_pwd).first()
+    print(user)
     if user:
-        session['user_id'] = user_id
         session.permanent = True
+        session['user_id'] = user_id
         return redirect(url_for('show', posts=posts))
     else:
         return "用户名或密码错误！"
@@ -78,17 +87,14 @@ def check_login():
 def regist():
     user_id = request.form.get('user_id')
     # user_id = eval(user_id)
-    print(request.form.get('user_id'))
     user = User.query.filter_by(user_id=user_id).first()
     if user:
         return "用户名已存在"
     else:
         pass
     user_name = request.form.get('user_name')
-    print(request.form.get('user_name'))
     user_pwd = request.form.get('user_password')
     # user_pwd = eval(user_pwd)
-    print(user_pwd)
     user_new = User(user_id=user_id, user_name=user_name,
                     user_password=user_pwd)
     # 单条插入
@@ -97,12 +103,12 @@ def regist():
     return redirect(url_for('login_app'))
 
 
-
 @app.route('/note_save', methods=['POST'])
 def note_save():
     note_name = request.form.get('note_name')
     note_type = request.form.get('note_type')
-    print(note_type)
+    my_note_type_r = {v: k for k, v in my_note_type.items()}
+    note_type = my_note_type_r[note_type]
     note_addr = request.form.get('note_addr')
     note_username = request.form.get('note_username')
     note_password = request.form.get('note_password')
@@ -120,10 +126,67 @@ def note_save():
     return redirect(url_for('show'))
 
 
+@app.route('/note_show', methods=['POST', 'GET'])
+def note_show():
+    page_name = "查看记录"
+    note_id = request.args.get('note_id')
+    note_info = Note_info.query.filter_by(note_id=note_id).first()
+    print(note_info)
+    return render_template("note_s.html", page_name=page_name, posts=note_info)
+
+
+@app.route('/note_del', methods=['POST', 'GET'])
+def note_del():
+    note_id = request.args.get('note_id')
+    try:
+        note_info = Note_info.query.filter_by(note_id=note_id).first()
+        db.session.delete(note_info)
+        db.session.commit()
+        return redirect(url_for('show', posts=posts))
+    except Exception as e:
+        return '删除失败！'
+
+
+@app.route('/update_list', methods=['POST', 'GET'])
+def update_list():
+    page_name = "修改记录"
+    note_id = request.args.get('note_id')
+    note_info = Note_info.query.filter_by(note_id=note_id).first()
+    print(note_info)
+    return render_template("note_u.html", page_name=page_name, posts=note_info)
+
+
+@app.route('/note_update', methods=['POST', 'GET'])
+def note_update():
+    note_id = request.form.get('note_id')
+    note_info = Note_info.query.filter_by(note_id=note_id).first()
+    note_info.note_name = request.form.get('note_name')
+    note_info.note_type = request.form.get('note_type')
+    note_info.note_addr = request.form.get('note_addr')
+    note_info.note_username = request.form.get('note_username')
+    note_info.note_password = request.form.get('note_password')
+    note_info.note_mark = request.form.get('note_mark')
+    # 单条插入
+    db.session.add(note_info)
+    db.session.commit()
+    return redirect(url_for('show'))
+
+
+def findType_id(note_id):
+    return my_note_type[note_id]
+
+
+def ifSelected(note_id_list):
+    if note_id_list[0] == note_id_list[1]:
+        return "selected"
+    else:
+        return ""
+
+
 @app.route("/logo_out")
 def logo_out():
     session.clear()
-    return redirect(url_for('login_app', posts=posts))
+    return redirect(url_for('index', posts=posts))
 
 
 @app.route("/regist")
@@ -132,11 +195,13 @@ def reg_app():
     return render_template("reg.html", page_name=page_name)
 
 
-
 @app.route("/")
 def index():
     page_name = "首页"
-    return render_template("index.html", page_name=page_name)
+    if db_init():
+        return render_template("index.html", page_name=page_name)
+    else:
+        return "系统异常，请联系管理员！"
 
 
 @app.route("/note")
@@ -146,9 +211,13 @@ def note():
 
 
 @app.route("/list")
+@log_required
 def show():
-    note_info= Note_info.query.all()
-    note_dict = json.dumps(note_info,default=Note_info.obj_to_json,ensure_ascii=False)
+    note_info = Note_info.query.all()
+    note_dict = json.dumps(
+        note_info,
+        default=Note_info.obj_to_json,
+        ensure_ascii=False)
     posts = json.loads(note_dict)
     return render_template("list.html", posts=posts)
 
@@ -176,6 +245,9 @@ def my_context_processor():
 
 
 def main():
+    env = app.jinja_env
+    env.filters['findType_id'] = findType_id
+    env.filters['ifSelected'] = ifSelected
     app.run(debug=True, host="192.168.33.11", port=8080)
 
 

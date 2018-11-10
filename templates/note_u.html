@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block main %}
+<form  action="{{url_for('note_update')}}" method="POST" class="form-inline">
+<div class="form-container">
+   <div><h1>添加记录</h1></div>
+   <div class="form-group">类别&nbsp;
+        <select class="form-control" name="note_type">
+          <option>服务器登录</option>
+          <option>阿里云用户</option>
+          <option>淘宝</option>
+          <option>学习网站</option>
+          <option>医院网络管理</option>
+          <option>重要配置</option>
+          <option>其他</option>
+        </select>
+   </div>
+    <div><input type="hidden" name="note_id" value={{ posts.note_id }}></div>
+  <div class="form-group">标签&nbsp;
+     <input  type="text" class="form-control"  placeholder="输入标签" name="note_name" value={{ posts.note_name }}>
+    </div>
+  <div class="form-group">地址&nbsp;
+      <input  type="text" class="form-control"  placeholder="输入地址" name="note_addr" value={{ posts.note_addr }}>
+    </div>
+  <div class="form-group">用户&nbsp;
+      <input  type="text" class="form-control"  placeholder="输入用户名" name="note_username" value={{ posts.note_username }}>
+    </div>
+  <div class="form-group">密码&nbsp;
+      <input  type="text" class="form-control"  placeholder="输入密码" name="note_password" value={{ posts.note_password }}>
+    </div>
+  <div class="form-group">备注&nbsp;
+      <textarea  rows="5" placeholder="输入备注"  cols="22" name ='note_mark' class="form-control">{{ posts.note_mark }}</textarea>
+    </div>
+    <div align="center">
+            <a class="btn btn-success"  href={{ url_for("show") }}><i class="fa fa-repeat"></i> 返回</a>
+            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i>提交</button>
+    </div>
+</div>
+</form>
+{% endblock %}

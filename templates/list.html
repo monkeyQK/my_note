@@ -1,9 +1,7 @@
 {% extends "base.html" %}
 {% block main %}
-    <form action="{{url_for('note')}}">
-    <button type="submit" class="btn btn-primary btn-block">添加备忘</button>
-    </form>
-
+    <div align="center">
+    </div>
     <table class="table table-bordered">
         <tr>
         <td align="center">ID</td>
@@ -12,16 +10,23 @@
         <td align="center">地址</td>
         <td align="center">用户名</td>
         <td align="center">密码</td>
-        <td align="center">备注</td></tr>
+        <td align="center">操作</td></tr>
         {% for item in posts %}
         <tr>
         <td>{{ item.note_id }}</td>
-        <td>{{ item.note_type }}</td>
+        <td>{{ item.note_type|findType_id}}</td>
         <td>{{ item.note_name }}</td>
         <td>{{ item.note_addr }}</td>
         <td>{{ item.note_username }}</td>
         <td>{{ item.note_password }}</td>
-        <td>{{ item.note_mark }}</td></tr>
+        <td>
+            <div align="center">
+            <a  class="btn btn-info btn-xs dialog" href={{url_for('note_show',note_id=item.note_id)}}>查看</a>
+            <a  class="btn btn-success btn-xs dialog" href={{url_for('update_list',note_id=item.note_id)}}>编辑</a>
+            <a class="btn btn-danger btn-xs" href={{url_for('note_del',note_id=item.note_id)}}>删除</a>
+            </div>
+        </td>
+        </tr>
        {% endfor %}
     </table>
 

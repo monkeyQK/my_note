@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block main %}
-{% if username %}
-<div class="content-text"><h1>欢迎{{username}}使用本系统！</h1></div>
+{% if session.get("user_id") %}
+    <div align="center"><h3><p style="color: purple">欢迎不一样的烟火使用本系统！</p></h3></div>
 {% else %}
 <h1>欢迎您使用本系统！</h1>
 {% endif %}

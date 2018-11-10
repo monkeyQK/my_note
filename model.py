@@ -8,7 +8,7 @@ class Note_info(db.Model):
     note_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     note_name = db.Column(db.String(30), default="")
     note_type = db.Column(db.String(30), default="")
-    note_addr = db.Column(db.String(20), default="")
+    note_addr = db.Column(db.String(30), default="")
     note_username = db.Column(db.String(20), default="")
     note_password = db.Column(db.String(20), default="")
     note_mark = db.Column(db.String(100), default="")
