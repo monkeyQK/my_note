@@ -38,9 +38,9 @@
         <li class="active"><a href="{{url_for('index')}}">首页 <span class="sr-only">(current)</span></a></li>
         <li ><a href="{{url_for('show')}}">备忘录</a></li>
       </ul>
-      <form class="navbar-form navbar-left">
+      <form class="navbar-form navbar-left" action="{{ url_for('note_queryByName') }}" method="POST">
         <div class="form-group">
-          <input type="text" class="form-control" placeholder="输入关键字">
+          <input type="text" class="form-control" placeholder="输入关键字" name="key_words">
         </div>
         <button type="submit" class="btn btn-primary ">查询</button>
          <a  class="btn btn-success" href={{url_for('note')}}>添加备忘</a>

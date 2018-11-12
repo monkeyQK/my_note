@@ -6,15 +6,19 @@
    <div align="center"><h1>备忘详细信息</h1></div>
    <div class="form-group">类别&nbsp;
         <select class="form-control" name="note_type">
-          <option>服务器登录</option>
-          <option>阿里云用户</option>
-          <option>淘宝</option>
-          <option>学习网站</option>
-          <option>医院网络管理</option>
-          <option>重要配置</option>
-          <option>其他</option>
+          <option value="01">服务器登录</option>
+          <option value="02">阿里云用户</option>
+          <option value="03">淘宝</option>
+          <option value="04">学习网站</option>
+          <option value="05">医院网络管理</option>
+          <option value="06">重要配置</option>
+          <option value="07">其他</option>
         </select>
    </div>
+    <script language= JavaScript>
+     var opt= "{{ posts.note_type }}";//根据后台传值来动态改变它
+     document.getElementsByName("note_type")[0].value=opt;
+    </script>
     <div><input type="hidden" name="note_id" value={{ posts.note_id }}></div>
   <div class="form-group">标签&nbsp;
      <input  type="text" class="form-control"  placeholder="输入标签" name="note_name" value={{ posts.note_name }}>

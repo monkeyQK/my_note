@@ -5,3 +5,5 @@ python3.6.4 x64
 Flask (1.0.2)
 Flask-SQLAlchemy (2.3.2)
 mysql-connector (2.1.4)
+Bootstrap
+font-awesome-4.7.0

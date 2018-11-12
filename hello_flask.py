@@ -16,17 +16,6 @@ note_user = {
     'qq': '145678916'
 }
 
-
-posts = [  # fake array of posts
-    {
-        'author': {'nickname': 'John'},
-        'body': 'Beautiful day in Portland!'
-    },
-    {
-        'author': {'nickname': 'Susan'},
-        'body': 'The Avengers movie was so cool!'
-    }]
-
 my_note_type = {
     "01": "服务器登录",
     "02": "阿里云用户",
@@ -78,7 +67,7 @@ def check_login():
     if user:
         session.permanent = True
         session['user_id'] = user_id
-        return redirect(url_for('show', posts=posts))
+        return redirect(url_for('show'))
     else:
         return "用户名或密码错误！"
 
@@ -142,7 +131,7 @@ def note_del():
         note_info = Note_info.query.filter_by(note_id=note_id).first()
         db.session.delete(note_info)
         db.session.commit()
-        return redirect(url_for('show', posts=posts))
+        return redirect(url_for('show'))
     except Exception as e:
         return '删除失败！'
 
@@ -186,7 +175,7 @@ def ifSelected(note_id_list):
 @app.route("/logo_out")
 def logo_out():
     session.clear()
-    return redirect(url_for('index', posts=posts))
+    return redirect(url_for('index'))
 
 
 @app.route("/regist")
@@ -205,6 +194,7 @@ def index():
 
 
 @app.route("/note")
+@log_required
 def note():
     page_name = "记录"
     return render_template("note.html", page_name=page_name)
@@ -220,6 +210,22 @@ def show():
         ensure_ascii=False)
     posts = json.loads(note_dict)
     return render_template("list.html", posts=posts)
+
+
+@app.route('/note_query', methods=['POST'])
+def note_queryByName():
+    keywords = request.form.get('key_words')
+    print(request.form.get('key_words'))
+    note_list = Note_info.query.filter(
+        Note_info.note_name.like(
+            '%' + keywords + '%')).all()
+    note_dict = json.dumps(
+        note_list,
+        default=Note_info.obj_to_json,
+        ensure_ascii=False)
+    posts = json.loads(note_dict)
+    return render_template('list.html', posts=posts)
+
 
 
 @app.route("/init")
